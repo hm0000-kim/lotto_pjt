@@ -1,0 +1,20 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # 1. 'db'라는 이름의 서비스(컨테이너)
+  db:
+    image: postgres:15 # PostgreSQL 15 버전 공식 이미지를 사용
+    restart: always # NAS가 재부팅되어도 DB가 자동으로 켜짐
+    environment:
+      # --- DB 접속 정보 (이것이 ID/PW가 됨) ---
+      POSTGRES_USER: lotto_user
+      POSTGRES_PASSWORD: lotto_password
+      POSTGRES_DB: lotto_db
+    ports:
+      # 내 PC(5432)와 Docker 컨테이너(5432)를 연결
+      - "5433:5432"
+    volumes:
+      # DB 데이터를 내 PC/NAS의 'db_data' 폴더에 영구 저장
+      # (컨테이너를 삭제해도 데이터가 안 날아감)
+      - ./db_data:/var/lib/postgresql/data
